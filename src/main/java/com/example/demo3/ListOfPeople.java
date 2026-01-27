@@ -1,0 +1,102 @@
+package com.example.demo3;
+
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.MonthDay;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.UUID;
+
+import static com.example.demo3.FileManager.loadFromFile;
+import static com.example.demo3.FileManager.saveToFile;
+
+public class ListOfPeople implements PeopleSetInterface {
+    List<Person> peopleList = new ArrayList<>();
+
+    @Override
+    public Person getPerson(UUID id) {
+        for (Person person : peopleList) {
+            UUID carrentPerson = person.getUUID();
+            if (id.equals(carrentPerson)) {
+                return person;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void addPerson(Person person) {
+        peopleList.add(person);
+        save();
+    }
+
+    @Override
+    public void delPerson(UUID id) {
+        Person deletedPerson = getPerson(id);
+        if (deletedPerson == null) {
+            return;
+        }
+        peopleList.remove(deletedPerson);
+        save();
+    }
+
+    private void save() {
+        try {
+            saveToFile(peopleList, "People.txt");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void load() {
+        try {
+            loadFromFile(peopleList, "People.txt");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Person editPerson(UUID id, String newName, String newBirthday) {
+        Person carrentPerson = getPerson(id);
+        if (carrentPerson == null) {
+            return null;
+        }
+        carrentPerson.setName(newName);
+        carrentPerson.setBirthdayDate(newBirthday);
+        save();
+        return carrentPerson;
+    }
+
+    @Override
+    public void printPeople() {
+        for (Person person : peopleList) {
+            System.out.println(person.getName() + ", " + person.getBirthdayDate());
+        }
+    }
+
+    @Override
+    public void printAll() {
+        for (Person person : peopleList) {
+            System.out.println(person.getUUID() + ", " + person.getName() + ", " + person.getBirthdayDate());
+        }
+    }
+
+    public void sortPeople() {
+        LocalDate today = LocalDate.now();
+
+        peopleList.sort(Comparator.comparing(person -> {
+            // берём день и месяц
+            MonthDay birthday = MonthDay.from(LocalDate.parse(person.getBirthdayDate()));
+
+            // строим дату ближайшего дня рождения
+            LocalDate nextBirthday = birthday.atYear(today.getYear());
+            if (nextBirthday.isBefore(today) || !nextBirthday.isEqual(today) && nextBirthday.isBefore(today)) {
+                nextBirthday = nextBirthday.plusYears(1);
+            }
+            return nextBirthday;
+        }));
+    }
+}
+
