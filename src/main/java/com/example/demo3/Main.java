@@ -15,6 +15,7 @@ public class Main {
             listOfPeople.load();
 
             listOfPeople.autoHappyBirthder(listOfPeople.peopleList);
+            listOfPeople.defaultPrint(listOfPeople.peopleList);
 
             System.out.println("Программа автоматически сортирует именинников и показывает ближайшие ДР");
             System.out.println("список команд: ");

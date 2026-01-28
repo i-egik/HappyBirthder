@@ -14,6 +14,19 @@ import static com.example.demo3.FileManager.saveToFile;
 public class ListOfPeople implements PeopleSetInterface {
     List<Person> peopleList = new ArrayList<>();
 
+    public void defaultPrint(List<Person> peopleList){
+        sortPeople();
+        if(peopleList.size() < 3){
+            System.out.println(peopleList.get(0).getName() + " " + peopleList.get(0).getBirthdayDate());
+            System.out.println(peopleList.get(1).getName() + " " + peopleList.get(1).getBirthdayDate());
+            return;
+        }
+        for (int i =0; i < 2; i++){
+            System.out.println(peopleList.get(i).getName() + " " + peopleList.get(i).getBirthdayDate());
+        }
+        }
+
+
     public void toCongradulate(UUID id) {
         Person happyPerson = getPerson(id);
         System.out.println("Товарисч " + happyPerson.getName() + " поздравляем тебя с днём авторизации в нашем сервере, денег тебе, здоровья и дружбы со своей кукушечкой");
@@ -24,7 +37,7 @@ public class ListOfPeople implements PeopleSetInterface {
         for (Person person : people) {
             LocalDate happyDayX = LocalDate.parse(person.getBirthdayDate());
             if (happyDayX.getMonth() == today.getMonth() && happyDayX.getDayOfMonth() == today.getDayOfMonth()) {
-                System.out.println("Товарисч " + person.getName() + " поздравляем тебя с днём авторизации в нашем сервере, денег тебе, здоровья и дружбы со своей кукушечкой");
+                System.out.println("Сегодня у нас родился " + person.getName() + " поздравляем тебя с днём авторизации в нашем сервере, денег тебе, здоровья и дружбы со своей кукушечкой");
             }
         }
     }
