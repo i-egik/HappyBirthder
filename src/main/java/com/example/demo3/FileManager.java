@@ -28,7 +28,7 @@ public class FileManager {
                 loadName = stringArray[1];
                 loadBirthday = stringArray[2];
 
-                people.add(new Person(UUID.fromString(loadUUID.trim()), loadName, loadBirthday));
+                people.add(new Person(UUID.fromString(loadUUID.trim()), loadName.trim(), loadBirthday.trim()));
             }
         } catch (FileNotFoundException e) {
         }

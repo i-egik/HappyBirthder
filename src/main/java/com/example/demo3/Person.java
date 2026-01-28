@@ -5,17 +5,15 @@ import java.util.UUID;
 public class Person {
     String name;
     String birthday;
-    UUID id;
+    final UUID id;
 
     public Person(UUID id, String name, String birthday) {
-        this.id = UUID.randomUUID();
+        this.id = id;
         this.name = name;
         this.birthday = birthday;
     }
 
-    public static void toCongradulate(Person person) {
-        System.out.println("Товарисч " + person.getName() + " поздравляем тебя с днём авторизации в нашем сервере, денег тебе, здоровья и дружбы со своей кукушечкой");
-    }
+
 
     UUID getUUID() {
         return this.id;

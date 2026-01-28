@@ -12,8 +12,9 @@ public class Main {
 
             ListOfPeople listOfPeople = new ListOfPeople();
 
+            listOfPeople.load();
 
-            listOfPeople.load();//тут будет заполнение списка из загрузчика
+            listOfPeople.autoHappyBirthder(listOfPeople.peopleList);
 
             System.out.println("Программа автоматически сортирует именинников и показывает ближайшие ДР");
             System.out.println("список команд: ");
@@ -22,6 +23,7 @@ public class Main {
             System.out.println("edit - редактировать");
             System.out.println("print - показать список именинников");
             System.out.println("printAll - показать список именинников вместе с индексами");
+            System.out.println("dohappy - поздравить выбранного именинника");
             System.out.println("end - закрыть программу");
 
             String command = "";
@@ -29,6 +31,11 @@ public class Main {
             while (!command.equals("end")) {
                 command = scanner.nextLine();
                 switch (command) {
+                    case "dohappy" -> {
+                        System.out.println("введите id именинника");
+                        String id = scanner.nextLine();
+                        listOfPeople.toCongradulate(UUID.fromString(id));
+                    }
                     case "add" -> {
                         System.out.println("введите через enter ИМЯ и день рождения в формате ГОД-МЕСЯЦ-ДЕНЬ");
                         String name = scanner.nextLine();
@@ -60,6 +67,7 @@ public class Main {
                     case "printAll" -> {
                         listOfPeople.printAll();
                     }
+
 
                 }
             }
