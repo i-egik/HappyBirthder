@@ -1,4 +1,9 @@
-package com.example.demo3;
+package com.example.demo3.service;
+
+import com.example.demo3.PeopleService;
+import com.example.demo3.model.Person;
+import lombok.Getter;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -10,21 +15,22 @@ import java.util.UUID;
 
 import static com.example.demo3.FileManager.loadFromFile;
 import static com.example.demo3.FileManager.saveToFile;
+@Service
+public class PeopleServiceInMemory implements PeopleService {
+    @Getter
+    private final List<Person> peopleList = new ArrayList<>();
 
-public class ListOfPeople implements PeopleSetInterface {
-    List<Person> peopleList = new ArrayList<>();
-
-    public void defaultPrint(List<Person> peopleList){
+    public void defaultPrint(List<Person> peopleList) {
         sortPeople();
-        if(peopleList.size() < 3){
-            System.out.println(peopleList.get(0).getName() + " " + peopleList.get(0).getBirthdayDate());
-            System.out.println(peopleList.get(1).getName() + " " + peopleList.get(1).getBirthdayDate());
+        if (peopleList.size() < 3) {
+            System.out.println(peopleList.get(0).getName() + " " + peopleList.get(0).getBirthday());
+            System.out.println(peopleList.get(1).getName() + " " + peopleList.get(1).getBirthday());
             return;
         }
-        for (int i =0; i < 2; i++){
-            System.out.println(peopleList.get(i).getName() + " " + peopleList.get(i).getBirthdayDate());
+        for (int i = 0; i < 2; i++) {
+            System.out.println(peopleList.get(i).getName() + " " + peopleList.get(i).getBirthday());
         }
-        }
+    }
 
 
     public void toCongradulate(UUID id) {
@@ -35,7 +41,7 @@ public class ListOfPeople implements PeopleSetInterface {
     public void autoHappyBirthder(List<Person> people) {
         LocalDate today = LocalDate.now();
         for (Person person : people) {
-            LocalDate happyDayX = LocalDate.parse(person.getBirthdayDate());
+            LocalDate happyDayX = LocalDate.parse(person.getBirthday());
             if (happyDayX.getMonth() == today.getMonth() && happyDayX.getDayOfMonth() == today.getDayOfMonth()) {
                 System.out.println("Сегодня у нас родился " + person.getName() + " поздравляем тебя с днём авторизации в нашем сервере, денег тебе, здоровья и дружбы со своей кукушечкой");
             }
@@ -46,7 +52,7 @@ public class ListOfPeople implements PeopleSetInterface {
     @Override
     public Person getPerson(UUID id) {
         for (Person person : peopleList) {
-            UUID carrentPerson = person.getUUID();
+            UUID carrentPerson = person.getId();
             if (id.equals(carrentPerson)) {
                 return person;
             }
@@ -93,7 +99,7 @@ public class ListOfPeople implements PeopleSetInterface {
             return null;
         }
         carrentPerson.setName(newName);
-        carrentPerson.setBirthdayDate(newBirthday);
+        carrentPerson.setBirthday(newBirthday);
         save();
         return carrentPerson;
     }
@@ -101,14 +107,14 @@ public class ListOfPeople implements PeopleSetInterface {
     @Override
     public void printPeople() {
         for (Person person : peopleList) {
-            System.out.println(person.getName() + ", " + person.getBirthdayDate());
+            System.out.println(person.getName() + ", " + person.getBirthday());
         }
     }
 
     @Override
     public void printAll() {
         for (Person person : peopleList) {
-            System.out.println(person.getUUID() + ", " + person.getName() + ", " + person.getBirthdayDate());
+            System.out.println(person.getId() + ", " + person.getName() + ", " + person.getBirthday());
         }
     }
 
@@ -117,7 +123,7 @@ public class ListOfPeople implements PeopleSetInterface {
 
         peopleList.sort(Comparator.comparing(person -> {
             // берём день и месяц
-            MonthDay birthday = MonthDay.from(LocalDate.parse(person.getBirthdayDate()));
+            MonthDay birthday = MonthDay.from(LocalDate.parse(person.getBirthday()));
 
             // строим дату ближайшего дня рождения
             LocalDate nextBirthday = birthday.atYear(today.getYear());

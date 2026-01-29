@@ -1,5 +1,8 @@
 package com.example.demo3;
 
+import com.example.demo3.model.Person;
+import com.example.demo3.service.PeopleServiceInMemory;
+
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.UUID;
@@ -10,12 +13,12 @@ public class Main {
 
         try (Scanner scanner = new Scanner(System.in)) {
 
-            ListOfPeople listOfPeople = new ListOfPeople();
+            PeopleServiceInMemory listOfPeople = new PeopleServiceInMemory();
 
             listOfPeople.load();
 
-            listOfPeople.autoHappyBirthder(listOfPeople.peopleList);
-            listOfPeople.defaultPrint(listOfPeople.peopleList);
+            listOfPeople.autoHappyBirthder(listOfPeople.getPeopleList());
+            listOfPeople.defaultPrint(listOfPeople.getPeopleList());
 
             System.out.println("Программа автоматически сортирует именинников и показывает ближайшие ДР");
             System.out.println("список команд: ");
@@ -60,7 +63,7 @@ public class Main {
                         String newName = scanner.nextLine();
                         String newBirthday = scanner.nextLine();
                         Person editedPerson = listOfPeople.editPerson(UUID.fromString(id), newName, newBirthday);
-                        System.out.println("персонаж с именем " + editedPerson.getName() + " " + editedPerson.getBirthdayDate() + " года рождения изменён");
+                        System.out.println("персонаж с именем " + editedPerson.getName() + " " + editedPerson.getBirthday() + " года рождения изменён");
                     }
                     case "print" -> {
                         listOfPeople.printPeople();

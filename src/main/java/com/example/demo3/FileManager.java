@@ -1,5 +1,7 @@
 package com.example.demo3;
 
+import com.example.demo3.model.Person;
+
 import java.io.*;
 import java.util.List;
 import java.util.UUID;
@@ -8,7 +10,7 @@ public class FileManager {
     public static void saveToFile(List<Person> people, String fileName) throws IOException {
         try (BufferedWriter saver = new BufferedWriter(new FileWriter(fileName))) {
             for (Person person : people) {
-                saver.write(person.getUUID() + " | " + person.getName() + " | " + person.getBirthdayDate());
+                saver.write(person.getId() + " | " + person.getName() + " | " + person.getBirthday());
                 saver.newLine();
             }
         }
